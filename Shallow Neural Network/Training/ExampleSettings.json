@@ -1,0 +1,4 @@
+{
+  "DataSetPath": "./dataset.txt", // Path to the learning dataset
+  "OutputNetworkFilePath": "./network.nn", // Path for the output neural network that can be used in classification part
+}

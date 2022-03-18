@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Training": {
+      "commandName": "Project",
+      "commandLineArgs": "./ExampleSettings.json"
+    }
+  }
+}

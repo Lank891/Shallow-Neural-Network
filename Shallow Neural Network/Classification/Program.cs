@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -35,7 +37,18 @@ namespace Classification
             };
             Settings settings = JsonSerializer.Deserialize<Settings>(settingsFileContent, jsonOptions);
 
-            Console.WriteLine(settings);
+            
+            NeuralNetwork neuralNetwork = JsonSerializer.Deserialize<NeuralNetwork>(File.ReadAllText(settings.NetworkFilePath), jsonOptions);
+            List<List<double>> inputSet = new InputSetReader().ReadInput(settings.InputFilePath, neuralNetwork.NumberOfInputs);
+
+            List<List<double>> outputSet = new();
+            foreach (var input in inputSet)
+            {
+                var output = neuralNetwork.Predict(input);
+                outputSet.Add(output);
+            }
+
+            new OutputSetWriter().Write(settings.OutputResultFilePath, outputSet);
         }
     }
 }

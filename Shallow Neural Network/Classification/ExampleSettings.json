@@ -1,4 +1,5 @@
 {
   "NetworkFilePath": "./network.nn", // Path to the network file from Training part
-  "OutputResultFilePath": "./output.txt", // Output of the classification
+  "InputFilePath": "./data.txt", // Path to data
+  "OutputResultFilePath": "./output.txt" // Output of the classification
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Common
@@ -15,6 +16,12 @@ namespace Common
             {
                 Neurons.Add(new Neuron(numberOfNeuronsInPreviousLayer));
             }
+        }
+
+        [JsonConstructor]
+        public Layer(List<Neuron> neurons)
+        {
+            Neurons = neurons;
         }
 
         public List<double> ForwardPass(List<double> inputs, IActivationFunction activationFunction)

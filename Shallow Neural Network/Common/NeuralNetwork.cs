@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Common
 {
     public class NeuralNetwork
     {
         public List<Layer> Layers { get; private set; }
+        [JsonIgnore]
         public IActivationFunction ActivationFunction { get; private set; } = null;
         public ActivationFunctionType ActivationFunctionType { get; private set; }
         public int Epochs { get; private set; }
@@ -38,7 +40,20 @@ namespace Common
 
             LoadActivationFunction();
         }
-        
+
+        [JsonConstructor]
+        public NeuralNetwork(List<Layer> layers, ActivationFunctionType activationFunctionType, int epochs, double momentum, int batchSize, double learningRate, int numberOfInputs)
+        {
+            Layers = layers;
+            ActivationFunctionType = activationFunctionType;
+            Epochs = epochs;
+            Momentum = momentum;
+            BatchSize = batchSize;
+            LearningRate = learningRate;
+            NumberOfInputs = numberOfInputs;
+            LoadActivationFunction();
+        }
+
         public void LoadActivationFunction() => ActivationFunction = ActivationFunctionFactory.Create(ActivationFunctionType);
 
         public void Train(List<TrainingElement> trainingSet)

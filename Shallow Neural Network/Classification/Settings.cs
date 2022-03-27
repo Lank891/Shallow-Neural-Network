@@ -9,6 +9,7 @@ namespace Classification
     internal class Settings
     {
         public string NetworkFilePath { get; set; } = null;
+        public string InputFilePath { get; set; } = null;
         public string OutputResultFilePath { get; set; } = null;
     }
 }

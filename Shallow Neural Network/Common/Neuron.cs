@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Common
@@ -21,7 +22,18 @@ namespace Common
 
             ResetPreparedChanges();
         }
-        
+
+        [JsonConstructor]
+        public Neuron(List<double> weights, List<double> preparedWeightChanges, double bias, double preparedBiasChange, double delta, double output)
+        {
+            Weights = weights;
+            PreparedWeightChanges = preparedWeightChanges;
+            Bias = bias;
+            PreparedBiasChange = preparedBiasChange;
+            Delta = delta;
+            Output = output;
+        }
+
         public double ForwardPass(List<double> inputs, IActivationFunction activationFunction)
         {
             double sum = 0;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    internal static class ListUtils
+    internal static class ListExtensions
     {
         private static readonly Random rng = new();
         

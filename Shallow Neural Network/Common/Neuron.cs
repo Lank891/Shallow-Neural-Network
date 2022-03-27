@@ -17,6 +17,7 @@ namespace Common
         public List<double> Weights { get; set; }
         public double Bias { get; set; }
         public double Delta { get; set; }
+        public double A { get; set; } //result of training
 
     }
 }

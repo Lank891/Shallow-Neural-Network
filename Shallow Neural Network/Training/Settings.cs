@@ -15,6 +15,7 @@ namespace Training
         public double Momentum { get; set; }
         public int BatchSize { get; set; }
         public double LearningRate { get; set; }
+        public int[] Layers { get; set; }
     }
 }
  

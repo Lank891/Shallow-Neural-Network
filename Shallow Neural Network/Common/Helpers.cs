@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common
+namespace Helpers
 {
-    public class Helpers
+    public static class Helpers
     {
         public static List<double> ActivationFunction(string name, List<double> x, bool isDerivative = false)
         {
@@ -32,6 +32,20 @@ namespace Common
                     return Identity(x);
             }
         }
+
+        public static double[] NormalizeValues(double[] x)
+        {
+            double min = x.Min();
+            double max = x.Max();
+            return x.ToList().Select(item => (item-min)/(max-min)).ToArray();
+        }
+        public static List<double> NormalizeValues(List<double> x)
+        {
+            double min = x.Min();
+            double max = x.Max();
+            return x.Select(item => (item-min)/(max-min)).ToList();
+        }
+
         public static double Sigmoid(double x, bool isDerivative = false)
         {
             if (isDerivative)

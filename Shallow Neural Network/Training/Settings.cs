@@ -10,5 +10,12 @@ namespace Training
     {
         public string DataSetPath { get; set; } = null;
         public string OutputNetworkFilePath { get; set; } = null;
+        public string ActivationFunction { get; set; }
+        public int Epochs { get; set; }
+        public double Momentum { get; set; }
+        public int BatchSize { get; set; }
+        public double LearningRate { get; set; }
+        public int[] Layers { get; set; }
     }
 }
+ 

@@ -1,5 +1,5 @@
 # Shallow-Neural-Network
-For Neural Networks course, PW MiNI 2022L
+For Neural Networks course, PW MiNI 2022L <br /> 
 OVERLEAF REPORT (https://www.overleaf.com/7317573144wbdrfpdgxvnj)
 - https://drive.google.com/drive/folders/1ZZ9TzgU8NHYkBMiuRxld8G_MlA858M3K?usp=sharing <br /> laby1(MLP), laby2(MLP + backpropagation), laby3(momentum), laby5(sigmoid, tanh)
 - https://towardsdatascience.com/building-a-neural-network-framework-in-c-16ef56ce1fef <br />

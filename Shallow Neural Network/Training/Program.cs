@@ -33,7 +33,7 @@ namespace Training
             };
             Settings settings = JsonSerializer.Deserialize<Settings>(settingsFileContent, jsonOptions);
 
-            Console.WriteLine(settings);
+            Console.WriteLine(settings.Momentum);
         }
     }
 }

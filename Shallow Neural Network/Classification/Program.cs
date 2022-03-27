@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Classification
 {
@@ -8,14 +9,14 @@ namespace Classification
     {
         static void Main(string[] args)
         {
-            if(args.Length != 1)
+            if (args.Length != 1)
             {
                 Console.WriteLine("Provide 1 argument - path to settings file.");
                 return;
             }
 
             string path = args[0];
-            if(!File.Exists(path))
+            if (!File.Exists(path))
             {
                 Console.WriteLine("Input file does not exist or you do not have permission to read it.");
                 return;
@@ -29,7 +30,8 @@ namespace Classification
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true,
                 ReadCommentHandling = JsonCommentHandling.Skip,
-                AllowTrailingCommas = true
+                AllowTrailingCommas = true,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
             };
             Settings settings = JsonSerializer.Deserialize<Settings>(settingsFileContent, jsonOptions);
 

@@ -8,16 +8,52 @@ namespace Common
 {
     public class Neuron
     {
-        public Neuron()
+        private static readonly Random random = new();
+
+        public Neuron(int numberOfNeuronsInPreviousLayer)
         {
             Weights = new List<double>();
-            Bias = new Random().NextDouble()* (1 - (-1)) - 1;//gives a double between -1.0 and 1.0
+            Bias = random.NextDouble() * 2 - 1; //between -1.0 and 1.0
+            for (int i = 0; i < numberOfNeuronsInPreviousLayer; i++)
+            {
+                Weights.Add(random.NextDouble() * 0.5 - 0.25); //between -0.25 and 0.25
+            }
+
+            ResetPreparedChanges();
+        }
+        
+        public double ForwardPass(List<double> inputs, IActivationFunction activationFunction)
+        {
+            double sum = 0;
+            for (int i = 0; i < inputs.Count; i++)
+            {
+                sum += inputs[i] * Weights[i];
+            }
+            sum += Bias;
+            return activationFunction.Calculate(sum);
         }
 
+        public void UpdateWeights()
+        {
+            for (int i = 0; i < Weights.Count; i++)
+            {
+                Weights[i] += PreparedWeightChanges[i];
+            }
+            Bias += PreparedBiasChange;
+        }
+        
+        public void ResetPreparedChanges()
+        {
+            PreparedWeightChanges = Weights.Select(w => 0.0).ToList();
+            PreparedBiasChange = 0;
+        }
+        
         public List<double> Weights { get; set; }
+        public List<double> PreparedWeightChanges { get; set; }
         public double Bias { get; set; }
+        public double PreparedBiasChange { get; set; }
         public double Delta { get; set; }
-        public double A { get; set; } //result of training
+        public double Output { get; set; }
 
     }
 }

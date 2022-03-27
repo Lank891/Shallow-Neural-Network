@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Training
 {
@@ -30,12 +31,13 @@ namespace Training
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true,
                 ReadCommentHandling = JsonCommentHandling.Skip,
-                AllowTrailingCommas = true
+                AllowTrailingCommas = true,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
             };
             Settings settings = JsonSerializer.Deserialize<Settings>(settingsFileContent, jsonOptions);
 
-            NeuralNetwork neuralNetwork = new NeuralNetwork(settings.Layers, settings.ActivationFunction, settings.Epochs, settings.Momentum, settings.BatchSize,
-                settings.LearningRate);
+            //NeuralNetwork neuralNetwork = new NeuralNetwork(settings.Layers, settings.ActivationFunction, settings.Epochs, settings.Momentum, settings.BatchSize,
+            //    settings.LearningRate);
             //read from dataset
             //double X = Helpers.Normalize();
             //double Y = ;

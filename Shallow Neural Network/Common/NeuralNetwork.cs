@@ -1,124 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
-using Helpers;
 
 namespace Common
 {
     public class NeuralNetwork
     {
-        //includes at least 1 hidden layer and exactly 1 output layer 
-        public List<Layer> Layers { get; set; }
-        public string ActivationFunction {get; set; }
-        public int Epochs { get; set; }
-        public double Momentum { get; set; }
-        public int BatchSize { get; set; }
-        public double LearningRate { get; set; }
+        public List<Layer> Layers { get; private set; }
+        public IActivationFunction ActivationFunction { get; private set; }
+        public int Epochs { get; private set; }
+        public double Momentum { get; private set; }
+        public int BatchSize { get; private set; }
+        public double LearningRate { get; private set; }
+        public int NumberOfInputs { get; private set; }
 
-        public NeuralNetwork(int[] listWithNumberOfNeuronsInEachLayer,string activationFunction, int epochs,
-            double momentum, int batchSize=500, double learningRate=0.001)
+        public NeuralNetwork(int numberOfInputs, int[] neuronsInLayers, ActivationFunctionType activationFunctionType, int epochs, double momentum, int batchSize, double learningRate)
         {
-            Layers=new List<Layer>();
-            int i = 0;
-            if (listWithNumberOfNeuronsInEachLayer.Length<2)
+            Layers = new List<Layer>();
+            NumberOfInputs = numberOfInputs;
+
+
+            if (neuronsInLayers.Length < 2)
             {
-                Console.WriteLine("We need at least 1 hidden layer and 1 output layer");
-                return;
+                throw new ArgumentException("Neural network must have at least 2 layers (1 hidden and 1 output)");
             }
-            for (; i < listWithNumberOfNeuronsInEachLayer.Length-1; i++)
+
+            for (int i = 0; i < neuronsInLayers.Length - 1; i++)
             {
-                Layers.Add(new Layer(false, listWithNumberOfNeuronsInEachLayer[i]));
+                Layers.Add(new Layer(neuronsInLayers[i], i == 0 ? numberOfInputs : neuronsInLayers[i - 1]));
             }
-            Layers.Add(new Layer(true, listWithNumberOfNeuronsInEachLayer[i]));
-            ActivationFunction=activationFunction;
-            Epochs=epochs;
-            Momentum=momentum;
-            BatchSize=batchSize;
-            LearningRate=learningRate;
+
+            ActivationFunction = ActivationFunctionFactory.Create(activationFunctionType);
+            Epochs = epochs;
+            Momentum = momentum;
+            BatchSize = batchSize;
+            LearningRate = learningRate;
         }
-        /*from lecture slides*/
-        /*Initialize weights W randomly; // small values
-        while ¬StopCondition do
-        ∆𝑊 = 0;
-        for (𝑋, 𝑌) ∈ TrainingSet do
-        𝑌෠= ForwardPass (𝑊, 𝑋);
-        ∆𝑊 = BackwardPass (𝑌෠, 𝑌);
-        𝑊 = 𝑊 + ∆𝑊;
-        Elements from the traing set (𝑋, 𝑌) are usually selected in radom order*/
-        public void Train(List<double> x, List<double> y)
-        {
-            if (BatchSize==0) { BatchSize = x.Count; }
-            int i = 0;
-            while (i<Epochs)
-            {
-                ForwardPass(x);
-                BackwardPass(x, y);
-                i++;
-                for (int j=0; j< x.Count; j+=BatchSize)
-                {
-                    List<double> currentBatchWithX = x.GetRange(j, j+BatchSize);
-                    List<double> currentBatchWithY = y.GetRange(j, j+BatchSize);
-                    ForwardPass(currentBatchWithX);
-                    BackwardPass(currentBatchWithX,currentBatchWithY);
 
-                /*code for momentum
-                    for i, weight in enumerate(self.weights):    
-                        tmp_w[i] = tmp_w[i]*momentum + delta_w[i]
-                        self.weights[i] = weight + learning_rate*tmp_w[i]
-                    for i, bias in enumerate(self.biases):
-                        tmp_b[i] = tmp_b[i]*momentum + delta_b[i]
-                        self.biases[i] = bias + learning_rate*tmp_b[i]*/
+        public void Train(List<TrainingElement> trainingSet)
+        {
+            if (BatchSize == 0) { BatchSize = trainingSet.Count; }
+
+            for (int epoch = 0; epoch < Epochs; epoch++)
+            {
+                trainingSet.Shuffle();
+
+                for (int batchStartIndex = 0; batchStartIndex < trainingSet.Count; batchStartIndex += BatchSize)
+                {
+                    ResetPrepartedChanges();
+
+                    for (int elementIndex = batchStartIndex; elementIndex < batchStartIndex + BatchSize && elementIndex < trainingSet.Count; elementIndex++)
+                    {
+                        TrainingElement trainingElement = trainingSet[elementIndex];
+
+                        List<double> output = ForwardPass(trainingElement.Input);
+                        BackwardPass(output, trainingElement.ExpectedOutput);
+                        UpdatePreparedWeightChanges(trainingElement.Input);
+                    }
+
+                    UpdateWeights();
                 }
-            }
-            //return x;
-        }
-        public List<double> ForwardPass(List<double> x)
-        {
-            var layersCount = Layers.Count;
-            List<double> temp = x;
-            for (int i = 0; i < Layers[layersCount - 1].Neurons.Count; i++)
-            {
-                Neuron neuron = Layers[layersCount - 1].Neurons[i];
-                neuron.Delta = neuron.A * (1 - neuron.A) * (x[i] - neuron.A);
 
-                for (int j = layersCount - 2; j > 2; j--)
-                {
-                    /*code from lab 5*/
-                    /*
-                        outputs = a @ self.weights[i] + self.biases[i]
-                        self.clean_outputs.append(outputs)
-                        a = self.f_aktywacji(outputs)
-                        self.A.append(a)
+            }
+        }
+
+        private List<double> ForwardPass(List<double> input)
+        {
+            List<double> output = input;
+            foreach (Layer layer in Layers)
+            {
+                output = layer.ForwardPass(output, ActivationFunction);
+            }
+            return output;
+        }
+
+        private void BackwardPass(List<double> output, List<double> expectedOutput)
+        {
+            List<double> errors = new();
+            for (int i = 0; i < output.Count; i++)
+            {
+                errors.Add(output[i] - expectedOutput[i]);
+            }
             
-                        out = a @ self.weights[-1] + self.biases[-1]
-  
-            
-                        self.clean_outputs.append(out)
-                        self.A.append(out)
-                        return out
-                     * 
-                     */
-                }
-            }
-            return temp;
-        }
-        public void BackwardPass(List<double> x, List<double> y)
-        {
-            for (int i = Layers.Count - 1; i > 1; i--)
+            Layers[-1].BackwardPass(errors, ActivationFunction);
+            for (int i = Layers.Count - 2; i >= 0; i--)
             {
-                foreach (Neuron n in Layers[i].Neurons)
-                {
-                    n.A = Helpers.Helpers.ActivationFunction("sigmoid",n.A + n.Bias);
-                    n.Bias += (LearningRate * n.Delta);
-                        for (int j = 0; j < n.Weights.Count; j++)
-                        n.Weights[j] += (LearningRate * Layers[i - 1].Neurons[j].A * n.Delta);
-                }
+                Layers[i].BackwardPass(Layers[i+1], ActivationFunction);
             }
-
         }
-        public List<double> Predict(List<double> x)
+
+        private void UpdatePreparedWeightChanges(List<double> input)
         {
-            return ForwardPass(x);
+            Layers[0].UpdatePreparedWeightChanges(input, LearningRate);
+            for (int i = 1; i < Layers.Count; i++)
+            {
+                Layers[i].UpdatePreparedWeightChanges(Layers[i - 1], LearningRate);
+            }
         }
+        
+        private void UpdateWeights() => Layers.ForEach(layer => layer.UpdateWeights());
 
-        }
-        }
+        private void ResetPrepartedChanges() => Layers.ForEach(layer => layer.ResetPreparedChanges());
+
+        public List<double> Predict(List<double> input) => ForwardPass(input);
+
+    }
+}

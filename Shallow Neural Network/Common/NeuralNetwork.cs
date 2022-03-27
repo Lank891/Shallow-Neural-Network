@@ -117,7 +117,7 @@ namespace Common
             }
         }
         
-        private void UpdateWeights() => Layers.ForEach(layer => layer.UpdateWeights());
+        private void UpdateWeights() => Layers.ForEach(layer => layer.UpdateWeights(Momentum));
 
         private void ResetPrepartedChanges() => Layers.ForEach(layer => layer.ResetPreparedChanges());
 

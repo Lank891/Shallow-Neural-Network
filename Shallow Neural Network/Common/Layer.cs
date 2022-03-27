@@ -79,11 +79,11 @@ namespace Common
             }
         }
 
-        public void UpdateWeights()
+        public void UpdateWeights(double momentum)
         {
             foreach (var neuron in Neurons)
             {
-                neuron.UpdateWeights();
+                neuron.UpdateWeights(momentum);
             }
         }
         

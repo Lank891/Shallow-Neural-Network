@@ -6,35 +6,40 @@ namespace Common
     public class NeuralNetwork
     {
         public List<Layer> Layers { get; private set; }
-        public IActivationFunction ActivationFunction { get; private set; }
+        public IActivationFunction ActivationFunction { get; private set; } = null;
+        public ActivationFunctionType ActivationFunctionType { get; private set; }
         public int Epochs { get; private set; }
         public double Momentum { get; private set; }
         public int BatchSize { get; private set; }
         public double LearningRate { get; private set; }
         public int NumberOfInputs { get; private set; }
+        public int NumberOfOutputs => Layers[^1].Neurons.Count;
 
         public NeuralNetwork(int numberOfInputs, int[] neuronsInLayers, ActivationFunctionType activationFunctionType, int epochs, double momentum, int batchSize, double learningRate)
         {
             Layers = new List<Layer>();
             NumberOfInputs = numberOfInputs;
-
+            ActivationFunctionType = activationFunctionType;
 
             if (neuronsInLayers.Length < 2)
             {
                 throw new ArgumentException("Neural network must have at least 2 layers (1 hidden and 1 output)");
             }
 
-            for (int i = 0; i < neuronsInLayers.Length - 1; i++)
+            for (int i = 0; i < neuronsInLayers.Length; i++)
             {
                 Layers.Add(new Layer(neuronsInLayers[i], i == 0 ? numberOfInputs : neuronsInLayers[i - 1]));
             }
 
-            ActivationFunction = ActivationFunctionFactory.Create(activationFunctionType);
             Epochs = epochs;
             Momentum = momentum;
             BatchSize = batchSize;
             LearningRate = learningRate;
+
+            LoadActivationFunction();
         }
+        
+        public void LoadActivationFunction() => ActivationFunction = ActivationFunctionFactory.Create(ActivationFunctionType);
 
         public void Train(List<TrainingElement> trainingSet)
         {
@@ -81,7 +86,7 @@ namespace Common
                 errors.Add(output[i] - expectedOutput[i]);
             }
             
-            Layers[-1].BackwardPass(errors, ActivationFunction);
+            Layers[^1].BackwardPass(errors, ActivationFunction);
             for (int i = Layers.Count - 2; i >= 0; i--)
             {
                 Layers[i].BackwardPass(Layers[i+1], ActivationFunction);

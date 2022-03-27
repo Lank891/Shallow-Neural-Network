@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    internal static class ListExtensions
+    public static class ListExtensions
     {
         private static readonly Random rng = new();
-        
-        internal static void Shuffle<T>(this IList<T> list)
+
+        public static void Shuffle<T>(this IList<T> list)
         {
             int n = list.Count;
             while (n > 1)
@@ -18,6 +18,19 @@ namespace Common
                 n--;
                 int k = rng.Next(n + 1);
                 (list[n], list[k]) = (list[k], list[n]);
+            }
+        }
+
+        public static void Normalize(this IList<double> list)
+        {
+            if (list.Count == 0)
+                return;
+
+            var sum = list.Sum();
+            
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i] /= sum;
             }
         }
     }

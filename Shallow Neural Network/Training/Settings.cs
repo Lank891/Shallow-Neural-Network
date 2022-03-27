@@ -10,6 +10,7 @@ namespace Training
     internal class Settings
     {
         public string DataSetPath { get; set; } = null;
+        public int NumberOfInputParameters { get; set; }
         public string OutputNetworkFilePath { get; set; } = null;
         public ActivationFunctionType ActivationFunction { get; set; }
         public int Epochs { get; set; }

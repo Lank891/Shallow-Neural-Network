@@ -1,6 +1,8 @@
 ﻿using Common;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -36,21 +38,28 @@ namespace Training
             };
             Settings settings = JsonSerializer.Deserialize<Settings>(settingsFileContent, jsonOptions);
 
-            //NeuralNetwork neuralNetwork = new NeuralNetwork(settings.Layers, settings.ActivationFunction, settings.Epochs, settings.Momentum, settings.BatchSize,
-            //    settings.LearningRate);
-            //read from dataset
-            //double X = Helpers.Normalize();
-            //double Y = ;
-            //neuralNetwork.Train(X,Y);
-            //double Y_predicted = neuralNetwork.predict(X);
+            NeuralNetwork neuralNetwork = new(
+                settings.NumberOfInputParameters,
+                settings.Layers,
+                settings.ActivationFunction,
+                settings.Epochs,
+                settings.Momentum,
+                settings.BatchSize,
+                settings.LearningRate
+                );
+
+            List<TrainingElement> trainingSet = new ClassificationTrainingSetReader(false).ReadTrainingSet(settings.DataSetPath, neuralNetwork.NumberOfInputs, neuralNetwork.NumberOfOutputs);
+            neuralNetwork.Train(trainingSet);
+
+            string serializedNetwork = JsonSerializer.Serialize<NeuralNetwork>(neuralNetwork, jsonOptions);
+            File.WriteAllText(settings.OutputNetworkFilePath, serializedNetwork);
+
 
             /*plotting*/
             //https://github.com/AwokeKnowing/GnuplotCSharp
             //Just put gnuplot.cs in your project, change the first line from C:\gnuplot\bin to the location of gnuplot.exe on your system.
             //GnuPlot.Plot(X, Y);
             //GnuPlot.Plot(X, Y_predicted);
-
-            Console.WriteLine(settings);
         }
     }
 }

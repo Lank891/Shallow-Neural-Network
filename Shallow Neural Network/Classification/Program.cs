@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace Classification
 {
     internal class Program
     {
-        static void Main(string[] args)
+
+    [STAThread]
+    static void Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -48,7 +51,18 @@ namespace Classification
                 outputSet.Add(output);
             }
 
-            new OutputSetWriter().Write(settings.OutputResultFilePath, outputSet);
+            new OutputSetWriter().Write(settings.OutputResultFilePath,settings.OutputAllNeuronsResultFilePath, outputSet);
+            RunApplication(); // or whatever
+        }
+        private static void RunApplication()
+        {
+            //var Application = System.Windows.Application();         
+            //Application.Run(new Form1());
+            /*Window qWindow = new Window();
+            qWindow.Title = "WPF in Console";
+            qWindow.Width = 400;
+            qWindow.Height = 300;
+            qWindow.ShowDialog();*/
         }
     }
 }

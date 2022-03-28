@@ -1,9 +1,9 @@
 {
   "DataSetPath": "./dataset.txt", // Path to the learning dataset
   "NumberOfInputParameters": 3, // How many parameters input have
-  "OutputNetworkFilePath": "./network.nn", // Path for the output neural network that can be used in classification part,
-  "Layers": [ 4, 5, 6, 7, 8, 9, 10, 2 ], // Number of neurons in layers (not including input), so only hidden layers and ouput layer (the last one) 
-  "ActivationFunction": "Tanh", // "Sigmoid" or "Tanh"
+  "OutputNetworkFilePath": "../../../../Classification/network.nn", // Path for the output neural network that can be used in classification part,
+  "Layers": [ 5, 2 ], // Number of neurons in layers (not including input), so only hidden layers and ouput layer (the last one) 
+  "ActivationFunction": "Sigmoid", // "Sigmoid" or "Tanh"
   "Epochs": 20,
   "Momentum": 0.9,
   "BatchSize": 20, // If 0, there is only one batch with all inputs per epoch

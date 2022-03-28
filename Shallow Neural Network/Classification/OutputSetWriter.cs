@@ -9,18 +9,18 @@ namespace Classification
 {
     public interface IOutputSetWriter
     {
-        public void Write(string path, string allNeuronsPath, List<List<double>> outputSet);
+        public void Write(string path, string allNeuronsPath, List<List<double>> inputSet,List<List<double>> outputSet);
     }
 
     public class OutputSetWriter : IOutputSetWriter
     {
-        public void Write(string path,string allNeuronsPath, List<List<double>> outputSet)
+        public void Write(string path,string allNeuronsPath, List<List<double>> inputSet, List<List<double>> outputSet)
         {
             List<string> vs = new List<string>();
-            foreach (var output in outputSet)
+            for(int i = 0; i < inputSet.Count; i++)
             {
-                string classID = OneHot(output);
-                vs.Add(classID);
+                string classID = OneHot(outputSet[i]);
+                vs.Add(string.Join("\t", inputSet[i])+"\t"+classID);
 
             }
             File.WriteAllLines(path, vs); /*outputs ids of classes found for the given inputs*/

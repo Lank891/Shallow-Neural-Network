@@ -27,7 +27,9 @@ namespace Common
                 return;
 
             var sum = list.Sum();
-            
+            if (sum == 0)
+                return;
+
             for (int i = 0; i < list.Count; i++)
             {
                 list[i] /= sum;

@@ -2,7 +2,6 @@ require(ggplot2)
 require(stringr)
 #plot data against one of the attributes
 plotDataSetAttribute <- function(inputPath, outputPath,attributeID) {
-  x<-seq(1,150)
   dir <- dirname(getwd())
   temp1<-readLines(paste(dir,inputPath,sep=""))
   #temp1[1]<-substr(temp1[1],4,17)
@@ -14,8 +13,9 @@ plotDataSetAttribute <- function(inputPath, outputPath,attributeID) {
   y1<-as.integer(y1)
   y2<-as.integer(y2)
   attr_1<-as.integer(attr_1)
-  p <- ggplot(df, aes(attr_1)) + geom_point(size = 2.5,aes(y=y1),colour="red")
-  p + geom_point(aes(y=y2),size = 1,colour="green")
+  x<-seq(1,length(attr_1))
+  df <- data.frame(x,y1,y2)
+  p <- ggplot(df, aes(attr_1)) + geom_point(size = 2.5,aes(y=y1),colour="red")+geom_point(aes(y=y2),size = 1,colour="green")
   p
 }
 

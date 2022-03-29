@@ -38,7 +38,7 @@ plotDataSet <- function(inputPath, outputPath) {
 
 #use functions
 plotDataSet("/Training/iris_training_150.txt","/Classification/output.txt")
-a<-getAccuracy("/Training/iris_training_150.txt","/Classification/output.txt")
+a<-getAccuracy("/Training/skin_training_8098.txt","/Classification/output.txt")
 a<-stringi::stri_join(round(a,1),"%", sep="")
 a
 

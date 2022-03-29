@@ -1,6 +1,6 @@
 {
   "NetworkFilePath": "./network.nn", // Path to the network file from Training part
-  "InputFilePath": "./iris_testFromTraining_150.txt", // Path to data
+  "InputFilePath": "./skin_testFromTraining_8098.txt", // Path to data
   "OutputResultFilePath": "../../../output.txt", // Output of the classification,
   "OutputAllNeuronsResultFilePath": "../../../outputAllNeurons.txt" // Output all values returned by neurons
 }

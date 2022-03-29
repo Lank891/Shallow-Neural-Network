@@ -1,0 +1,16 @@
+{
+  "DataSetPath": "./irisPetals_training_150.txt", // Path to the learning dataset
+  "NumberOfInputParameters": 2, // How many parameters input have
+  "OutputNetworkFilePath": "../../../../Classification/network.nn", // Path for the output neural network that can be used in classification part,
+  "Layers": [ 2,2, 3 ], // Since we use classification, the nr of neurons in output layer has to be the same as the number of classes. Number of neurons in layers (not including input), so only hidden layers and ouput layer (the last one) 
+  "ActivationFunction": "Sigmoid", // "Sigmoid" or "Tanh"
+  "Epochs": 20,
+  "Momentum": 0.9,
+  "BatchSize": 40, // If 0, there is only one batch with all inputs per epoch
+  "LearningRate": 0.009
+}
+//nr of neurons in hidden layer should be 2/3 the size of the input layer, plus the size of the output layer
+
+//must be more than or equal to one and less than or equal to the number of samples in the training dataset
+
+//the optimal size of the hidden layer is usually between the size of the input and size of the output layers

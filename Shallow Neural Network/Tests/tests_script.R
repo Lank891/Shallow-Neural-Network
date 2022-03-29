@@ -74,7 +74,7 @@ xlim = range(x);
 ylim = range(c(y1,y2))
 train.err.1 = mean((y1-y2)^2)
 l <- as.integer(y1-y2)
-sum(l != 0)/length(df$attr_1)
+sum(l != 0)/length(df$x)
 l <- lapply(l, function(x) {x[x!=0]})
 #test.err.1 = mean((y0-y0hat.1)^2)
 inputID<-x

@@ -52,17 +52,7 @@ namespace Classification
             }
 
             new OutputSetWriter().Write(settings.OutputResultFilePath,settings.OutputAllNeuronsResultFilePath, inputSet,outputSet);
-            RunApplication(); // or whatever
-        }
-        private static void RunApplication()
-        {
-            //var Application = System.Windows.Application();         
-            //Application.Run(new Form1());
-            /*Window qWindow = new Window();
-            qWindow.Title = "WPF in Console";
-            qWindow.Width = 400;
-            qWindow.Height = 300;
-            qWindow.ShowDialog();*/
+
         }
     }
 }

@@ -2,10 +2,10 @@
   "DataSetPath": "./iris_training_150.txt", // Path to the learning dataset
   "NumberOfInputParameters": 4, // How many parameters input have
   "OutputNetworkFilePath": "../../../../Classification/network.nn", // Path for the output neural network that can be used in classification part,
-  "Layers": [ 2, 3 ], // Number of neurons in layers (not including input), so only hidden layers and ouput layer (the last one) 
+  "Layers": [ 3, 3 ], // Number of neurons in layers (not including input), so only hidden layers and ouput layer (the last one) 
   "ActivationFunction": "Tanh", // "Sigmoid" or "Tanh"
-  "Epochs": 300,
-  "Momentum": 0.9,
-  "BatchSize": 30, // If 0, there is only one batch with all inputs per epoch
-  "LearningRate": 0.01
+  "Epochs": 100,
+  "Momentum": 0.1,
+  "BatchSize": 10, // If 0, there is only one batch with all inputs per epoch
+  "LearningRate": 0.1
 }

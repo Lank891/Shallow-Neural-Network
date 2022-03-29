@@ -58,6 +58,7 @@ namespace Common
 
         public void Train(List<TrainingElement> trainingSet)
         {
+            double totalEpochError = 0.0;
             if (BatchSize == 0) { BatchSize = trainingSet.Count; }
 
             for (int epoch = 0; epoch < Epochs; epoch++)
@@ -75,11 +76,20 @@ namespace Common
                         List<double> output = ForwardPass(trainingElement.Input);
                         BackwardPass(output, trainingElement.ExpectedOutput);
                         UpdatePreparedWeightChanges(trainingElement.Input);
+                        double tempError = 0.0;
+                        for(int j = 0; j<output.Count; j++)
+                        {
+                            tempError += (0.05 * Math.Pow(output[j] - trainingElement.ExpectedOutput[j], 2));
+                            totalEpochError += tempError;
+                        }
+                        
                     }
 
                     UpdateWeights();
                 }
 
+                totalEpochError /= trainingSet.Count;
+                Console.WriteLine("Epoch "+ (epoch+1)+ " error "+totalEpochError);
             }
         }
 
@@ -100,7 +110,6 @@ namespace Common
             {
                 errors.Add(output[i] - expectedOutput[i]);
             }
-            
             Layers[^1].BackwardPass(errors, ActivationFunction);
             for (int i = Layers.Count - 2; i >= 0; i--)
             {

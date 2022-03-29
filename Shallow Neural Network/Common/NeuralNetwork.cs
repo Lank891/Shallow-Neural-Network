@@ -63,8 +63,8 @@ namespace Common
 
             for (int epoch = 0; epoch < Epochs; epoch++)
             {
+                //totalEpochError = 0.0;
                 trainingSet.Shuffle();
-
                 for (int batchStartIndex = 0; batchStartIndex < trainingSet.Count; batchStartIndex += BatchSize)
                 {
                     ResetPrepartedChanges();
@@ -72,14 +72,13 @@ namespace Common
                     for (int elementIndex = batchStartIndex; elementIndex < batchStartIndex + BatchSize && elementIndex < trainingSet.Count; elementIndex++)
                     {
                         TrainingElement trainingElement = trainingSet[elementIndex];
-
+                        double tempError = 0.0;
                         List<double> output = ForwardPass(trainingElement.Input);
                         BackwardPass(output, trainingElement.ExpectedOutput);
                         UpdatePreparedWeightChanges(trainingElement.Input);
-                        double tempError = 0.0;
                         for(int j = 0; j<output.Count; j++)
                         {
-                            tempError += (0.05 * Math.Pow(output[j] - trainingElement.ExpectedOutput[j], 2));
+                            tempError += (0.5*Math.Pow(output[j] - trainingElement.ExpectedOutput[j], 2));
                             totalEpochError += tempError;
                         }
                         

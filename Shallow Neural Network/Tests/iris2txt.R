@@ -22,3 +22,7 @@ writeLines(tx2, con="../Training/irisPetals_training_150.txt")
 tx  <- readLines("../Training/irisPetals_training_150.txt")
 tx  <- gsub('.{2}$', '', tx)
 writeLines(tx, con="../Classification/irisPetals_testFromTraining_150.txt")
+
+tx3  <- readLines("../Training/Skin_NonSkin.txt")
+tx3  <- gsub('.{2}$', '', tx3)
+writeLines(tx3, con="../Classification/Skin_NonSkin_test.txt")

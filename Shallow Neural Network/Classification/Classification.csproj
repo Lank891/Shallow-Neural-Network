@@ -22,7 +22,16 @@
     <None Update="skin_testFromTraining_8098.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Skin_NonSkin_test.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="skin_testFromTraining_15.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+      <None Update="Skin2.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    <None Update="irisWorst.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ExampleSettings.json">

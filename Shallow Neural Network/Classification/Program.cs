@@ -48,7 +48,7 @@ namespace Classification
                 outputSet.Add(output);
             }
 
-            new OutputSetWriter().Write(settings.OutputResultFilePath, outputSet);
+            new OutputSetWriter().Write(settings.OutputResultFilePath,settings.OutputAllNeuronsResultFilePath, inputSet,outputSet);
         }
     }
 }

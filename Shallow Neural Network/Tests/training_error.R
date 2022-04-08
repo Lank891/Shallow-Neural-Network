@@ -23,7 +23,6 @@ plotDataSet <- function(inputPath, outputPath) {
   y1<-as.integer(y1)
   y2<-as.integer(y2)
   x<-seq(1,length(y1))
-  attr_1<-as.integer(attr_1)
   df <- data.frame(x,y1,y2)
   error <- round(mean((y1-y2)^2),6)
   p <- ggplot(df, aes(x)) + geom_point(size = 2.5,aes(y=y1),colour="red")+geom_point(aes(y=y2),size = 1,colour="green")+ xlab("Input ID") + ylab("Class ID")
@@ -37,8 +36,5 @@ plotDataSet <- function(inputPath, outputPath) {
 }#graphs data set and returns error
 
 #use functions
-plotDataSet("/Training/iris_training_150.txt","/Classification/output.txt")
-a<-getAccuracy("/Training/skin_training_8098.txt","/Classification/output.txt")
-a<-stringi::stri_join(round(a,1),"%", sep="")
-a
+plotDataSet("/Training/skin_training_8098.txt","/Classification/output.txt")
 

@@ -11,5 +11,6 @@ namespace Classification
         public string NetworkFilePath { get; set; } = null;
         public string InputFilePath { get; set; } = null;
         public string OutputResultFilePath { get; set; } = null;
+        public string OutputAllNeuronsResultFilePath { get; set; } = null;
     }
 }
